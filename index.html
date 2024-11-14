@@ -28,4 +28,87 @@
 <body>
 
     <h1>Arkadaşlık Testine Hoşgeldiniz</h1>
-    <p>Başlamak için "Başla" butonuna basın
+    <p>Başlamak için "Başla" butonuna basın</p>
+    
+    <button id="start-btn">Başla</button>
+
+    <div id="music-container">
+        <audio id="background-music" loop>
+            <source src="sari-glin-turkusu.mp3" type="audio/mp3">
+        </audio>
+    </div>
+
+    <div id="question-container">
+        <h2 id="question-title">1. Soru: Berfin Sude'nin annesine yanlışlıkla ne diye seslenmiştir?</h2>
+        <button class="answer-btn" data-correct="true" data-question="1">A) Nesibe</button>
+        <button class="answer-btn" data-correct="false" data-question="1">B) Necize</button>
+        <button class="answer-btn" data-correct="false" data-question="1">C) Necili</button>
+        <button class="answer-btn" data-correct="false" data-question="1">D) Necite</button>
+    </div>
+
+    <div id="result-container" style="display:none;">
+        <p>Test tamamlandı!</p>
+    </div>
+
+    <audio id="incorrect-sound" src="hiko-baba-dri.mp3" preload="auto"></audio>
+    <audio id="correct-music" src="ask-yeniden.mp3" preload="auto"></audio>
+
+    <script>
+        let startButton = document.getElementById("start-btn");
+        let questionContainer = document.getElementById("question-container");
+        let backgroundMusic = document.getElementById("background-music");
+        let incorrectSound = document.getElementById("incorrect-sound");
+        let correctMusic = document.getElementById("correct-music");
+        let resultContainer = document.getElementById("result-container");
+        let questionTitle = document.getElementById("question-title");
+
+        let questions = [
+            {
+                question: "Berfin Sude'nin annesine yanlışlıkla ne diye seslenmiştir?",
+                options: ["A) Nesibe", "B) Necize", "C) Necili", "D) Necite"],
+                correctAnswer: "A) Nesibe"
+            },
+            {
+                question: "Sude'nin en sevdiği yemek nedir?",
+                options: ["A) Mantı", "B) Beyti", "C) Karnıyarık", "D) Hatay Döner"],
+                correctAnswer: "C) Karnıyarık"
+            },
+            {
+                question: "Sude'nin burcu nedir?",
+                options: ["A) Yengeç", "B) Koç", "C) Yılan", "D) Oğlak"],
+                correctAnswer: "D) Oğlak"
+            },
+            {
+                question: "Berfin sürekli Sude'nin hangi hastalığı olduğunu düşünüyor?",
+                options: ["A) Verem", "B) Rinit", "C) Gastrit", "D) Astım"],
+                correctAnswer: "D) Astım"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        
+        startButton.addEventListener("click", () => {
+            // Müzik durduruluyor ve test başlatılıyor
+            backgroundMusic.pause();
+            showQuestion();
+            correctMusic.play();
+        });
+
+        function showQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                let question = questions[currentQuestionIndex];
+                questionTitle.textContent = `${currentQuestionIndex + 1}. Soru: ${question.question}`;
+                
+                let buttons = document.querySelectorAll(".answer-btn");
+                buttons.forEach((button, index) => {
+                    button.textContent = question.options[index];
+                    button.dataset.correct = (question.options[index] === question.correctAnswer) ? "true" : "false";
+                });
+                questionContainer.style.display = "block";
+            } else {
+                resultContainer.style.display = "block";
+                questionContainer.style.display = "none";
+            }
+        }
+
+        document.querySelectorAll(".answer-btn").forEach(button =
